@@ -20,7 +20,11 @@ var create_btn = (frm) => {
             },
             freeze: true,
             callback: function(r) {
-                console.log('Btn func!')
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'green',
+                    message: __('Imported successfully.')
+                });
             }
         });
     }).addClass('btn btn-primary');
