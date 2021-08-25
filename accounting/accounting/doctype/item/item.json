@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "field:item_name",
  "creation": "2021-08-19 11:13:21.749077",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -11,12 +12,13 @@
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
-   "label": "Item name"
+   "label": "Item name",
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-08-19 11:13:21.749077",
+ "modified": "2021-08-24 12:32:31.974589",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Item",
@@ -37,5 +39,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "title_field": "item_name",
  "track_changes": 1
 }

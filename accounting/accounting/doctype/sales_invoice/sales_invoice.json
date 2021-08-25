@@ -1,46 +1,47 @@
 {
  "actions": [],
+ "autoname": "SIV.#####",
  "creation": "2021-08-19 10:45:13.242823",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "customer_name",
-  "payment_due_date",
+  "due_date",
   "debit_to",
+  "credit_from",
   "column_break_3",
   "date",
   "posting_time",
   "section_break_5",
   "items",
+  "status",
+  "grand_total",
   "amended_from"
  ],
  "fields": [
   {
    "fieldname": "customer_name",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Customer Name",
+   "options": "Customer",
    "reqd": 1
   },
   {
+   "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Date",
-   "reqd": 1
+   "read_only": 1
   },
   {
+   "default": "Now",
    "fieldname": "posting_time",
    "fieldtype": "Time",
-   "label": "Posting Time"
-  },
-  {
-   "fieldname": "payment_due_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Payment Due Date",
-   "reqd": 1
+   "label": "Posting Time",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_5",
@@ -72,12 +73,45 @@
    "fieldtype": "Link",
    "label": "Debit To",
    "options": "Accounts"
+  },
+  {
+   "fetch_from": "customer_name.account_name",
+   "fetch_if_empty": 1,
+   "fieldname": "credit_from",
+   "fieldtype": "Data",
+   "label": "Credit From",
+   "read_only": 1
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Due Date",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Draft\nPaid\nUnpaid\nOverdue\nCancelled",
+   "print_hide": 1
+  },
+  {
+   "default": "0.0",
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
   }
  ],
+ "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-08-20 11:56:04.691831",
+ "modified": "2021-08-25 13:37:32.971818",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Sales Invoice",
@@ -98,5 +132,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "title_field": "customer_name",
  "track_changes": 1
 }
