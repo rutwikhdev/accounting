@@ -1,27 +1,35 @@
 {
  "actions": [],
+ "autoname": "PIV.#####",
  "creation": "2021-08-19 11:38:07.888484",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "supplier_name",
+  "due_date",
+  "debit_to",
+  "credit_from",
+  "column_break_5",
   "date",
   "posting_time",
-  "due_date",
   "section_break_5",
   "items",
+  "status",
+  "grand_total",
   "amended_from"
  ],
  "fields": [
   {
    "fieldname": "supplier_name",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Supplier Name",
+   "options": "Supplier",
    "reqd": 1
   },
   {
+   "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
@@ -29,6 +37,7 @@
    "reqd": 1
   },
   {
+   "default": "Now",
    "fieldname": "posting_time",
    "fieldtype": "Time",
    "in_list_view": 1,
@@ -38,7 +47,9 @@
   {
    "fieldname": "due_date",
    "fieldtype": "Date",
-   "label": "Due date"
+   "in_list_view": 1,
+   "label": "Due date",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_5",
@@ -48,7 +59,7 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Purchase Invoice Item"
+   "options": "Sales Invoice Item"
   },
   {
    "fieldname": "amended_from",
@@ -58,12 +69,44 @@
    "options": "Purchase Invoice",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fetch_from": "supplier_name.account_name",
+   "fetch_if_empty": 1,
+   "fieldname": "debit_to",
+   "fieldtype": "Data",
+   "label": "Debit To",
+   "read_only": 1
+  },
+  {
+   "fieldname": "credit_from",
+   "fieldtype": "Link",
+   "label": "Credit From",
+   "options": "Accounts"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Draft\nPaid\nUnpaid\nOverdue\nCancelled"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-08-19 12:24:03.309621",
+ "modified": "2021-08-26 20:55:35.497881",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Purchase Invoice",
@@ -84,5 +127,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "title_field": "supplier_name",
  "track_changes": 1
 }
