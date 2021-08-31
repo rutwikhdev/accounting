@@ -34,7 +34,7 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Date",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "default": "Now",
@@ -42,7 +42,7 @@
    "fieldtype": "Time",
    "in_list_view": 1,
    "label": "Posting time",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "due_date",
@@ -79,6 +79,7 @@
    "read_only": 1
   },
   {
+   "default": "Creditors",
    "fieldname": "credit_from",
    "fieldtype": "Link",
    "label": "Credit From",
@@ -106,7 +107,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-08-26 20:55:35.497881",
+ "modified": "2021-08-31 19:45:51.771319",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Purchase Invoice",

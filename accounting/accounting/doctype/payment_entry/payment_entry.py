@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import flt
+from ..gl_entry.gl_entry import make_gl_entries
 
 class PaymentEntry(Document):
     def set_status(self, status):
@@ -15,39 +15,30 @@ class PaymentEntry(Document):
         iv.save()
 
     def on_submit(self):
-        paid_to = self.paid_to_s if self.payment_type == 'Receive' else self.paid_to_p
-        self.make_gl_entries(self.account, paid_to)
+        kwargs = {
+            'date': self.posting_date,
+            'debit_acc': self.account,
+            'credit_acc': self.paid_to_s if self.payment_type == 'Receive' else self.paid_to_p,
+            'amount': self.paid_amount_s if self.payment_type == 'Receive' else self.paid_amount_p,
+            'voucher_type': 'Payment Entry',
+            'voucher_no': self.name,
+            'against_voucher_type': 'Sales Invoice' if self.payment_type == 'Receive' else 'Purchase Invoice',
+            'against_voucher_no': self.sales_invoice if self.payment_type == 'Receive' else self.purchase_invoice
+        }
+        make_gl_entries(**kwargs)
         self.set_status('Paid')
 
     def on_cancel(self):
-        paid_to = self.paid_to_s if self.payment_type == 'Receive' else self.paid_to_p
-        self.make_gl_entries(self.account, paid_to, reverse=True)
+        kwargs = {
+            'date': self.posting_date,
+            'debit_acc': self.account,
+            'credit_acc': self.paid_to_s if self.payment_type == 'Receive' else self.paid_to_p,
+            'amount': self.paid_amount_s if self.payment_type == 'Receive' else self.paid_amount_p,
+            'voucher_type': 'Payment Entry',
+            'voucher_no': self.name,
+            'against_voucher_type': 'Sales Invoice' if self.payment_type == 'Receive' else 'Purchase Invoice',
+            'against_voucher_no': self.sales_invoice if self.payment_type == 'Receive' else self.purchase_invoice,
+            'reverse': True
+        }
+        make_gl_entries(**kwargs)
         self.set_status('Unpaid')
-
-    def make_gl_entries(self, debit_acc, credit_acc, reverse=False):
-        if reverse:
-            debit_acc, credit_acc = credit_acc, debit_acc
-
-        # Debit
-        d_gl = frappe.new_doc('GL Entry')
-        d_gl.posting_date = self.posting_date
-        d_gl.account = debit_acc
-        d_gl.debit = self.paid_amount_s if self.payment_type == 'Receive' else self.paid_amount_p
-        d_gl.credit = flt(0)
-        d_gl.voucher_type = 'Payment Entry'
-        d_gl.voucher_no = self.name
-        d_gl.against_voucher_type = 'Sales Invoice' if self.payment_type == 'Receive' else self.paid_amount_p
-        d_gl.against_voucher = self.sales_invoice if self.payment_type == 'Receive' else self.purchase_invoice
-        d_gl.submit()
-
-        # Credit
-        c_gl = frappe.new_doc('GL Entry')
-        c_gl.posting_date = self.posting_date
-        c_gl.account = credit_acc
-        c_gl.credit = self.paid_amount_s if self.payment_type == 'Receive' else self.paid_amount_p
-        c_gl.debit = flt(0)
-        c_gl.voucher_type = 'Payment Entry'
-        c_gl.voucher_no = self.name
-        c_gl.against_voucher_type = 'Sales Invoice' if self.payment_type == 'Receive' else 'Purchase Invoice'
-        c_gl.against_voucher = self.sales_invoice if self.payment_type == 'Receive' else self.purchase_invoice
-        c_gl.submit()
