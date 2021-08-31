@@ -2,9 +2,12 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Sales Invoice', {
-	// refresh: function(frm) {
-
-	// }
+	refresh: function(frm) {
+		frm.add_custom_button(__('Payment'), () => {
+			var doc = frappe.model.get_new_doc('Payment Entry')
+			frappe.set_route('Form', doc.doctype, doc.name)
+		}, __('Create'))
+	}
 });
 
 frappe.ui.form.on('Sales Invoice Item', {
