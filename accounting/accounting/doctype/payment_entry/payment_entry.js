@@ -2,7 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Payment Entry', {
-	// refresh: function(frm) {
-
-	// }
+    refresh: function(frm) {
+        frm.set_query('sales_invoice', () => {
+            return {
+                'filters': {'status': 'Unpaid'}
+            }
+        });
+        frm.set_query('purchase_invoice', () => {
+            return {
+                'filters': {'status': 'Unpaid'}
+            }
+        });
+    },
 });

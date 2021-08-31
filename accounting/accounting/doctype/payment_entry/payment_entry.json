@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "PAY.#####",
  "creation": "2021-08-19 13:27:08.626600",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -10,11 +11,18 @@
   "posting_date",
   "payment_from__to_section",
   "party",
+  "account",
+  "select_unpaid_invoice_section",
+  "sales_invoice",
+  "purchase_invoice",
   "accounts_section",
-  "paid_from",
-  "paid_to",
+  "paid_from_s",
+  "paid_to_s",
+  "paid_from_p",
+  "paid_to_p",
   "amount_section",
-  "paid_amount_inr",
+  "paid_amount_s",
+  "paid_amount_p",
   "amended_from"
  ],
  "fields": [
@@ -30,9 +38,11 @@
    "options": "Receive\nPay"
   },
   {
+   "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
-   "label": "Posting Date"
+   "label": "Posting Date",
+   "read_only": 1
   },
   {
    "fieldname": "payment_from__to_section",
@@ -47,35 +57,12 @@
   {
    "fieldname": "accounts_section",
    "fieldtype": "Section Break",
-   "label": "Accounts"
-  },
-  {
-   "fieldname": "paid_from",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Paid From",
-   "options": "Accounts",
-   "reqd": 1
-  },
-  {
-   "fieldname": "paid_to",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Paid To",
-   "options": "Accounts",
-   "reqd": 1
+   "label": "Invoice details"
   },
   {
    "fieldname": "amount_section",
    "fieldtype": "Section Break",
    "label": "Amount"
-  },
-  {
-   "fieldname": "paid_amount_inr",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Paid Amount (INR)",
-   "reqd": 1
   },
   {
    "fieldname": "amended_from",
@@ -85,12 +72,89 @@
    "options": "Payment Entry",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "select_unpaid_invoice_section",
+   "fieldtype": "Section Break",
+   "label": "Select Unpaid Invoice"
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Receive'",
+   "fetch_from": "sales_invoice.credit_from",
+   "fieldname": "paid_from_s",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Paid From",
+   "options": "Accounts"
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Receive'",
+   "fetch_from": "sales_invoice.debit_to",
+   "fieldname": "paid_to_s",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Paid To",
+   "options": "Accounts"
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Pay'",
+   "fetch_from": "purchase_invoice.credit_from",
+   "fieldname": "paid_from_p",
+   "fieldtype": "Link",
+   "label": "Paid From",
+   "options": "Accounts"
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Pay'",
+   "fetch_from": "purchase_invoice.debit_to",
+   "fieldname": "paid_to_p",
+   "fieldtype": "Link",
+   "label": "Paid To",
+   "options": "Accounts"
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Receive'",
+   "fetch_from": "sales_invoice.grand_total",
+   "fieldname": "paid_amount_s",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Paid Amount (INR)"
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Pay'",
+   "fetch_from": "purchase_invoice.grand_total",
+   "fieldname": "paid_amount_p",
+   "fieldtype": "Currency",
+   "label": "Paid Amount (INR)"
+  },
+  {
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "label": "Account",
+   "options": "Accounts",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Receive';",
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "options": "Sales Invoice",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval: doc.payment_type == 'Pay';",
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice",
+   "print_hide": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-08-19 13:31:17.603145",
+ "modified": "2021-08-31 09:09:54.050341",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Payment Entry",
