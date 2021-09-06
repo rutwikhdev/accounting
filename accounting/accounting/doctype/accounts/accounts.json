@@ -13,7 +13,8 @@
   "lft",
   "rgt",
   "is_group",
-  "old_parent"
+  "old_parent",
+  "account_type"
  ],
  "fields": [
   {
@@ -70,12 +71,17 @@
    "fieldtype": "Link",
    "label": "Parent Accounts",
    "options": "Accounts"
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Data",
+   "label": "Account Type"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2021-08-17 18:40:10.272014",
+ "modified": "2021-09-04 13:59:12.145891",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Accounts",
