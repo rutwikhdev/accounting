@@ -18,8 +18,7 @@ def execute(filters=None):
 
     columns = get_columns()
     chart = get_chart_data(columns, asset, liability, equity)
-    print("Chart Data: ", chart)
-    return columns, data, None, chart
+    return columns, data, None, chart, None
 
 def get_chart_data(columns, asset, liability, equity):
     labels = [d.get("label") for d in columns[2:]]

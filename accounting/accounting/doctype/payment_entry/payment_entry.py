@@ -6,6 +6,19 @@ from frappe.model.document import Document
 from ..gl_entry.gl_entry import make_gl_entries
 
 class PaymentEntry(Document):
+    def validate(self):
+        if self.payment_type == 'Receive': # Sales Invoice
+            ac = frappe.get_doc('Accounts', self.account)
+            if not ac.root_type == 'Income':
+                frappe.throw('The account should be of type Income')
+        elif self.payment_type == 'Pay': # Purchase Invoice
+            ac = frappe.get_doc('Accounts', self.account)
+            print(ac.root_type)
+            if not ac.root_type == 'Expense':
+                frappe.throw('The account should be of type Expense')
+        else:
+            frappe.throw('Invalid payment entry, need a Sales or Purchase Invoice')
+
     def set_status(self, status):
         doctype = 'Sales Invoice' if self.payment_type == 'Receive' else 'Purchase Invoice'
         docname = self.sales_invoice if self.payment_type == 'Receive' else self.purchase_invoice

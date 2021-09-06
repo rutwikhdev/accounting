@@ -10,7 +10,7 @@ from accounting.accounting.report.financial_statements import get_data, get_colu
 
 def execute(filters=None):
     columns, data = [], []
-    income = get_data('Income', 'Credit', filters.from_date, filters.to_date)
+    income = get_data('Income', 'Debit', filters.from_date, filters.to_date)
     expense = get_data('Expense', 'Debit', filters.from_date, filters.to_date)
 
     data.extend(income or [])
@@ -25,7 +25,9 @@ def execute(filters=None):
     columns = get_columns()
     chart = get_chart_data(columns, income, expense, net_profit_loss)
 
-    return columns, data
+    report_summary = get_report_summary(income, expense, net_profit_loss)
+
+    return columns, data, None, chart, report_summary
 
 def get_net_profit_loss(income, expense):
     total = 0
@@ -39,6 +41,7 @@ def get_net_profit_loss(income, expense):
     total_expense = flt(expense[-2]['opening_balance'], 3) if expense else 0
 
     net_profit_loss['opening_balance'] = total_income - total_expense
+    print(total_income, total_expense)
 
     return net_profit_loss
 
@@ -47,7 +50,7 @@ def get_report_summary(income, expense, net_profit_loss):
 
     net_income = flt(income[-2]['opening_balance'], 3)
     net_expense = flt(expense[-2]['opening_balance'], 3)
-    net_profit = flt(net_profit_loss[-2]['opening_balance'], 3)
+    net_profit = flt(net_profit_loss['opening_balance'], 3)
 
     profit_label = _('Net Profit')
     income_label = _('Total Income')
