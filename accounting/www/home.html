@@ -1,0 +1,26 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<h2 class="text-center text-light bg-dark" style="height: 50px;">
+    Gada Electronics
+</h2>
+
+<button type="button" class="btn btn-secondary mr-2 mb-4 cart">
+    Cart
+</button>
+{% set products = frappe.get_all('Item', fields=['name', 'price'], order_by='name')%}
+
+<div class="mt-5">
+{% for product in products %}
+<div class="card p-3 mt-2 mx-auto">
+    <h5 class="card-title">{{ product.name }}</h5>
+    <p class="card-text">₹ {{ product.price }}</p>
+    <button class="btn btn-primary addtocart" style="width: fit-content;" incart data-attribute="{{product.name}}">
+        Add to cart
+    </button>
+</div>
+
+{% endfor %}
+</div>
+
+{% endblock %}

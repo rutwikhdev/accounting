@@ -6,19 +6,29 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "item_name"
+  "item_name",
+  "price"
  ],
  "fields": [
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Item name",
+   "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Price",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-08-24 12:32:31.974589",
+ "modified": "2021-09-07 11:06:07.553951",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Item",
