@@ -1,6 +1,8 @@
 #Copyright (c) 2021, Rutwik and contributors
 # For license information, please see license.txt
 
+import frappe, json, datetime
+from frappe.utils import getdate
 from frappe.model.document import Document
 from ..gl_entry.gl_entry import make_gl_entries
 
@@ -23,7 +25,7 @@ class SalesInvoice(Document):
             if self.get('amended_form'):
                 self.status = 'Draft'
             return
-        
+
         if self.docstatus == 1:
             self.status = 'Unpaid'
 
@@ -53,3 +55,28 @@ class SalesInvoice(Document):
             'reverse': True
         }
         make_gl_entries(**kwargs)
+
+@frappe.whitelist(allow_guest=True)
+def generate_sales_invoice(data):
+    data = json.loads(data)
+    items = []
+
+    for item in data:
+        rate = frappe.get_doc('Item', item['itemName'], fields=['price']).price
+        qty = int(item['quantity'])
+        items.append(frappe._dict({
+            'item': item['itemName'], 'quantity': qty, 'rate': rate, 'amount': rate * qty
+        }))
+
+    frappe.get_doc({
+        'doctype': 'Sales Invoice',
+        'customer_name': 'E Store Customer',
+        'due_date': getdate() + datetime.timedelta(days=7),
+        'debit_to': 'Debtors',
+        'credit_from': 'Stock In Hand',
+        'items': items,
+        'status': 'Unpaid'
+    }).submit()
+
+
+    return "returning invoice"

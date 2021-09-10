@@ -30,3 +30,54 @@ function addToCart (event) {
     }
 }
 
+function openCart (event) {
+    frappe.msgprint({
+        message: cart.length == 0 ? 'Cart Empty!' : getCartItems(),
+        title: 'Cart Checkout',
+        primary_action: {
+            'label': __('Checkout Invoice'),
+            action: checkoutInvoice
+        }
+    })
+}
+
+function getCartItems() {
+    var html = ``
+
+    for (let i = 0; i < cart.length; i++) {
+        html += `<div style="margin-bottom: 5px;">
+                    <p>${cart[i]}</p>
+                    <input class="item" type="number" min="1" value="1" item-name="${cart[i]}" style="width: 60px;">
+                    <br>
+                    <hr>
+                </div>`
+    }
+
+    return html
+}
+
+
+function checkoutInvoice() {
+    var argsData = [];
+    var itemsList = document.querySelectorAll('.item');
+
+    for (let i = 0; i < itemsList.length; i++) {
+        argsData.push({
+            itemName: itemsList[i].getAttribute('item-name'),
+            quantity: itemsList[i].value
+        })
+    }
+
+    console.log(argsData)
+
+    frappe.call({
+        method: 'accounting.accounting.doctype.sales_invoice.sales_invoice.generate_sales_invoice',
+        args: {
+            data: JSON.stringify(argsData)
+        },
+        callback: () => {
+            //location.reload()
+            alert('callback complete')
+        }
+    })
+}

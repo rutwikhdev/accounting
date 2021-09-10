@@ -5,7 +5,7 @@
     Gada Electronics
 </h2>
 
-<button type="button" class="btn btn-secondary mr-2 mb-4 cart">
+<button type="button" class="btn btn-secondary cart">
     Cart
 </button>
 {% set products = frappe.get_all('Item', fields=['name', 'price'], order_by='name')%}
