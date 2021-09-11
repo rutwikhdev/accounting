@@ -68,7 +68,7 @@ def generate_sales_invoice(data):
             'item': item['itemName'], 'quantity': qty, 'rate': rate, 'amount': rate * qty
         }))
 
-    frappe.get_doc({
+    doc = frappe.get_doc({
         'doctype': 'Sales Invoice',
         'customer_name': 'E Store Customer',
         'due_date': getdate() + datetime.timedelta(days=7),
@@ -76,7 +76,8 @@ def generate_sales_invoice(data):
         'credit_from': 'Stock In Hand',
         'items': items,
         'status': 'Unpaid'
-    }).submit()
+    })
 
+    doc.submit()
 
-    return "returning invoice"
+    return doc.name

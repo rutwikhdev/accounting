@@ -59,7 +59,7 @@ function getCartItems() {
 
 function checkoutInvoice() {
     var argsData = [];
-    var itemsList = document.querySelectorAll('.item');
+    let itemsList = document.querySelectorAll('.item');
 
     for (let i = 0; i < itemsList.length; i++) {
         argsData.push({
@@ -68,16 +68,54 @@ function checkoutInvoice() {
         })
     }
 
-    console.log(argsData)
-
     frappe.call({
         method: 'accounting.accounting.doctype.sales_invoice.sales_invoice.generate_sales_invoice',
         args: {
             data: JSON.stringify(argsData)
         },
-        callback: () => {
-            //location.reload()
-            alert('callback complete')
+        callback: (res) => {
+            getPDF('Sales Invoice', res.message, 'pdf')
         }
     })
+}
+
+function getPDF(doctype, docname, print_format, letterhead='', lang_code='') {
+
+    let full_pdf_url = get_full_url(
+        '/printview?doctype=' +
+        encodeURIComponent(doctype) +
+        '&name=' +
+        encodeURIComponent(docname) +
+        '&trigger_print=1' +
+        '&format=' +
+        encodeURIComponent(print_format) +
+        '&no_letterhead=' +
+        (letterhead ? '0' : '1') +
+        '&letterhead=' +
+        encodeURIComponent(letterhead) +
+        (lang_code ? '&_lang=' + lang_code : '')
+    )
+
+    const w = window.open(full_pdf_url)
+
+    if (!w) {
+        frappe.msgprint('Please enable popup!')
+    }
+}
+
+function get_full_url(url) {
+    if(url.indexOf("http://")===0 || url.indexOf("https://")===0) {
+        return url;
+    }
+    return url.substr(0,1)==="/" ?
+        (get_base_url() + url) :
+        (get_base_url() + "/" + url);
+}
+
+function get_base_url() {
+    // base url
+    var url = (frappe.base_url || window.location.origin);
+    if(url.substr(url.length-1, 1)=='/') url = url.substr(0, url.length-1);
+
+    return url
 }
