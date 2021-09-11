@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 from frappe.model.document import Document
-from ..gl_entry.gl_entry import make_gl_entries
+from accounting.accounting.doctype.gl_entry.gl_entry import make_gl_entries
 
 class PurchaseInvoice(Document):
     def validate(self):
@@ -23,7 +23,7 @@ class PurchaseInvoice(Document):
                 if self.get('amended_form'):
                     self.status = 'Draft'
                 return
-            
+
             if self.docstatus == 1:
                 self.status = 'Unpaid'
 

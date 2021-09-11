@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from ..gl_entry.gl_entry import make_gl_entries
+from accounting.accounting.doctype.gl_entry.gl_entry import make_gl_entries
 
 class PaymentEntry(Document):
     def validate(self):

@@ -4,7 +4,7 @@
 frappe.ui.form.on('Sales Invoice', {
 	refresh: function(frm) {
 		frm.add_custom_button(__('Payment'), () => {
-			var doc = frappe.model.get_new_doc('Payment Entry')
+			const doc = frappe.model.get_new_doc('Payment Entry')
 			frappe.set_route('Form', doc.doctype, doc.name)
 		}, __('Create'))
 	}

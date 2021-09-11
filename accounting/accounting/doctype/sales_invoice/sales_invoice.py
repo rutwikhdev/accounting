@@ -4,7 +4,7 @@
 import frappe, json, datetime
 from frappe.utils import getdate
 from frappe.model.document import Document
-from ..gl_entry.gl_entry import make_gl_entries
+from accounting.accounting.doctype.gl_entry.gl_entry import make_gl_entries
 
 class SalesInvoice(Document):
     def validate(self):
@@ -62,7 +62,7 @@ def generate_sales_invoice(data):
     items = []
 
     for item in data:
-        rate = frappe.get_doc('Item', item['itemName'], fields=['price']).price
+        rate = frappe.db.get_value('Item', item['itemName'], 'price')
         qty = int(item['quantity'])
         items.append(frappe._dict({
             'item': item['itemName'], 'quantity': qty, 'rate': rate, 'amount': rate * qty

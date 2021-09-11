@@ -1,6 +1,6 @@
-var addToCartBtns = document.querySelectorAll(".addtocart");
-var cartBtn = document.querySelector('.cart');
-var cart = [];
+let addToCartBtns = document.querySelectorAll(".addtocart");
+let cartBtn = document.querySelector('.cart');
+let cart = [];
 
 // add event listener to `cart` button
 cartBtn.addEventListener('click', openCart);
