@@ -7,8 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "customer_name",
-  "account_name",
-  "amended_from"
+  "account_name"
  ],
  "fields": [
   {
@@ -26,20 +25,11 @@
    "label": "Account Name",
    "options": "Accounts",
    "reqd": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Customer",
-   "print_hide": 1,
-   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-08-24 12:35:01.397360",
+ "modified": "2021-09-13 10:28:22.511445",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Customer",

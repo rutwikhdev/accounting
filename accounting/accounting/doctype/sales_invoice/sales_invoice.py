@@ -45,8 +45,8 @@ class SalesInvoice(Document):
     def on_cancel(self):
         kwargs = {
             'date': self.date,
-            'debit_acc': self.debit,
-            'credit_acc': self.credit_form,
+            'debit_acc': self.debit_to,
+            'credit_acc': self.credit_from,
             'amount': self.grand_total,
             'voucher_type': 'Sales Invoice',
             'voucher_no': self.name,
