@@ -17,6 +17,7 @@ bench get-app https://github.com/rutwikhdev/accounting.git
 bench --site site_name install-app accounting
 ```
 
+
 #### Web flow
 
 ![](images/webpage1.png)
